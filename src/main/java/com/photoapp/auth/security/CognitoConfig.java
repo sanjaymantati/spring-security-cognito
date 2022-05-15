@@ -16,13 +16,18 @@ public class CognitoConfig {
     @Value(value = "${aws.access-secret}")
     private String secretKey;
 
+
+    @Value(value = "${aws.cognito.region}")
+    private String region;
+
+
     @Bean
     public AWSCognitoIdentityProvider cognitoClient() {
 
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
 
         return AWSCognitoIdentityProviderClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion("******************")
+                .withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(region)
                 .build();
     }
 }

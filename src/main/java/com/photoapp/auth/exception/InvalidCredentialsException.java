@@ -3,7 +3,7 @@ package com.photoapp.auth.exception;
 public class InvalidCredentialsException extends RuntimeException{
 
 
-    private String message;
+    private final String message;
     public InvalidCredentialsException(Throwable cause) {
         super(cause);
     }

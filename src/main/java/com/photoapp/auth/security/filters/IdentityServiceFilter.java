@@ -17,10 +17,6 @@ public class IdentityServiceFilter extends AbstractAuthenticationProcessingFilte
         this.setAuthenticationManager(authenticationManager);
     }
 
-    @Override
-    protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
-        return super.requiresAuthentication(request, response);
-    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {

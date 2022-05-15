@@ -35,9 +35,7 @@ public class LoginController {
 
     @GetMapping(path = "/user-profile")
     public ResponseEntity<Object> userProfile(Principal principal) {
-        System.out.println("principal.getName() = " + principal.getName());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("auth.getName() = " + auth.getPrincipal());
         return ResponseEntity.accepted().build();
     }
 }

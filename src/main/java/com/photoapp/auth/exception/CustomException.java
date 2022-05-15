@@ -2,7 +2,7 @@ package com.photoapp.auth.exception;
 
 public class CustomException extends RuntimeException {
 
-    private String message;
+    private final String message;
     public CustomException(Throwable cause) {
         super(cause);
     }

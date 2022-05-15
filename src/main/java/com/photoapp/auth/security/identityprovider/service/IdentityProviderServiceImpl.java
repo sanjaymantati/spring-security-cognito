@@ -53,10 +53,9 @@ public class IdentityProviderServiceImpl implements IdentityProviderService {
         AdminCreateUserRequest userRequest = new AdminCreateUserRequest().withUserPoolId(this.userPoolId).withUsername(request.getUsername()).withTemporaryPassword(request.getPassword()).withUserAttributes(emailAttr, emailVerifiedAttr).withMessageAction(MessageActionType.SUPPRESS).withDesiredDeliveryMediums(DeliveryMediumType.EMAIL);
 
         AdminCreateUserResult createUserResult = this.cognitoClient.adminCreateUser(userRequest);
-        if (notEmpty(createUserResult.getUser().getUserStatus())) {
-            if ("FORCE_CHANGE_PASSWORD".equals(createUserResult.getUser().getUserStatus())) {
-                responseDto.setChallenge(IdentityChallenge.UPDATE_PASSWORD);
-            }
+        if (notEmpty(createUserResult.getUser().getUserStatus()) && "FORCE_CHANGE_PASSWORD".equals(createUserResult.getUser().getUserStatus()))
+        {
+            responseDto.setChallenge(IdentityChallenge.UPDATE_PASSWORD);
         }
         return responseDto;
     }
@@ -80,15 +79,11 @@ public class IdentityProviderServiceImpl implements IdentityProviderService {
                 .withUserPoolId(userPoolId)
                 .withAuthParameters(authParams);
         AdminInitiateAuthResult result = cognitoClient.adminInitiateAuth(authRequest);
-       /* if (notEmpty(result.getChallengeName()))
-            return LoginResponseDto.builder()
-                    .challenge(convertToIdentityChallenge(result.getChallengeName()))
-                    .accessToken(result.getAuthenticationResult()).build();*/
 
-        LoginResponseDto responseDto = LoginResponseDto.builder().build();
+        LoginResponseDto responseDto = new LoginResponseDto();
         responseDto.setChallenge(convertToIdentityChallenge(result.getChallengeName()));
         AuthenticationResultType authenticationResult = result.getAuthenticationResult();
-        if(notEmpty(result.getAuthenticationResult())){
+        if (notEmpty(result.getAuthenticationResult())) {
             responseDto.setAccessToken(authenticationResult.getAccessToken());
             responseDto.setIdToken(authenticationResult.getIdToken());
             responseDto.setRefreshToken(authenticationResult.getRefreshToken());
@@ -100,7 +95,7 @@ public class IdentityProviderServiceImpl implements IdentityProviderService {
 
 
     private IdentityChallenge convertToIdentityChallenge(String str) {
-        if(notEmpty(str))
+        if (notEmpty(str))
             return IdentityChallenge.valueOf(str);
         return null;
     }
